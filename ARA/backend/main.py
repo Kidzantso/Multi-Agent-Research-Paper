@@ -39,18 +39,22 @@ class ResearchResponse(BaseModel):
 async def conduct_research(request: ResearchRequest):
     try:
         initial_state = {
-            "query": request.query,
+            "topic": request.query,
             "plan": "",
-            "search_queries": [],
-            "raw_content": [],
-            "analyzed_content": "",
-            "report_draft": "",
-            "final_report": ""
+            "abstract": "",
+            "introduction": "",
+            "related_work": "",
+            "datasets": "",
+            "methodology": "",
+            "models_used": "",
+            "draft": "",
+            "editor": "",
+            "final": "",
         }
         
         # Invoke LangGraph Multi-Agent Workflow
         final_state = research_graph.invoke(initial_state)
-        report = final_state.get("final_report", "No report generated.")
+        report = final_state.get("final", "No report generated.")
         
         # Save to Database
         db = SessionLocal()
